@@ -23,13 +23,13 @@ module.exports.postCards = (req, res) => {
 
 module.exports.deleteCards = (req, res) => {
   Card.deleteOne({ _id: req.params.cardId })
-    .then((cards) => {
-      if (!cards) {
-        return res.status(404).send({ message: ' Карточка с указанным _id не найдена.' });
+    .then((cards) => res.send(cards))
+    .catch((err) => {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
+        return res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
       }
-      return res.send(cards);
-    })
-    .catch(() => { res.status(500).send({ message: 'Ошибка по умолчанию.' }); });
+      return res.status(500).send({ message: 'Ошибка по умолчанию.' });
+    });
 };
 
 module.exports.likeCard = (req, res) => {
