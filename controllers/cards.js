@@ -31,7 +31,7 @@ module.exports.deleteCards = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
-        return res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
+        return res.status(400).send({ message: 'Карточка с указанным _id не найдена.' });
       }
       return res.status(500).send({ message: 'Ошибка по умолчанию.' });
     });
