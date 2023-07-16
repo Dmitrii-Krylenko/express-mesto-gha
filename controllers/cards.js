@@ -23,7 +23,12 @@ module.exports.postCards = (req, res) => {
 
 module.exports.deleteCards = (req, res) => {
   Card.deleteOne({ _id: req.params.cardId })
-    .then((cards) => res.send(cards))
+    .then((deleteStatus) => {
+      if (deleteStatus.deletedCount === 0) {
+        return res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
+      }
+      return res.send();
+    })
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
         return res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
