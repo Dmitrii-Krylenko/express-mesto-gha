@@ -8,15 +8,18 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getUserId = (req, res) => {
-  User.findById(req.params.userId)
+  User.findById(req.params.userId, {}, { new: true, runValidators: false })
     .then((user) => {
       if (!user) {
         return res.status(404).send({ message: 'Пользователь по указанному _id не найден.' });
       }
       return res.send(user);
     })
-    .catch(() => {
-      res.status(500).send({ message: 'Ошибка по умолчанию.' });
+    .catch((err) => {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
+        return res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя. по умолчанию.' });
+      }
+      return res.status(500).send({ message: 'Ошибка по умолчанию.' });
     });
 };
 
