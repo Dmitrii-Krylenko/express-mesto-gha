@@ -27,7 +27,7 @@ module.exports.deleteCards = (req, res) => {
       if (deleteStatus.deletedCount === 0) {
         return res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
       }
-      return res.send(null);
+      return res.status(200).send({ message: 'УДОЛИЛОСЬ.' });
     })
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
