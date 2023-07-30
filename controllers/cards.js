@@ -1,7 +1,7 @@
 const Card = require('../models/card');
 const BadRequest = require('../errors/badrequesterr');
 const NotFound = require('../errors/notfound');
-
+const Forbidden = require('../errors/forbidden');
 // rout card
 module.exports.getCards = (req, res, next) => {
   Card.find({})
@@ -27,7 +27,7 @@ module.exports.deleteCards = (req, res, next) => {
   Card.deleteOne({ _id: req.params.cardId, owner: req.user._id })
     .then((deleteStatus) => {
       if (deleteStatus.deletedCount === 0) {
-        return next(new NotFound('Карточка с указанным _id не найдена.'));
+        return next(new Forbidden('Карточка с указанным _id не найдена.'));
       }
       return res.status(200).send({ message: 'УДОЛИЛОСЬ.' });
     })
@@ -47,7 +47,7 @@ module.exports.likeCard = (req, res, next) => {
   )
     .then((cards) => {
       if (!cards) {
-        return next(new NotFound('Передан несуществующий _id карточки.'));
+        return next(new BadRequest('Передан несуществующий _id карточки.'));
       }
       return res.status(200).res.send(cards);
     })
