@@ -1,5 +1,5 @@
 const Card = require('../models/card');
-const BadRequest = require('../errors/badrequest');
+const BadRequest = require('../errors/badrequesterr');
 const NotFound = require('../errors/notfound');
 
 // rout card
