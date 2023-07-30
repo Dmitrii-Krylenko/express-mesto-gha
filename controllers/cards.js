@@ -1,7 +1,7 @@
 const Card = require('../models/card');
 const BadRequest = require('../errors/badrequesterr');
 const NotFound = require('../errors/notfound');
-// const Forbidden = require('../errors/forbidden');
+const Forbidden = require('../errors/forbidden');
 // rout card
 module.exports.getCards = (req, res, next) => {
   Card.find({})
@@ -33,7 +33,7 @@ module.exports.deleteCards = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
-        return next(new NotFound('1Карточка с указанным _id не найдена.'));
+        return next(new Forbidden('1Карточка с указанным _id не найдена.'));
       }
       return next(err);
     });
