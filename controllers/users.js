@@ -21,15 +21,16 @@ module.exports.getUserId = (req, res, next) => {
       }
       return res.send(user);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new BadRequest(
-          'Переданы некорректные данные пользователя.',
-        );
-      } else {
-        next(err);
-      }
-    });
+    .catch(next);
+  // .catch((err) => {
+  //   if (err.name === 'CastError') {
+  //     throw new BadRequest(
+  //       'Переданы некорректные данные пользователя.',
+  //     );
+  //   } else {
+  //     next(err);
+  //   }
+  // });
 };
 
 module.exports.createUser = (req, res, next) => {
