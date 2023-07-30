@@ -33,7 +33,7 @@ module.exports.deleteCards = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
-        return next(new BadRequest('Карточка с указанным _id не найдена.'));
+        return next(new NotFound('Карточка с указанным _id не найдена.'));
       }
       return next(err);
     });
@@ -47,7 +47,7 @@ module.exports.likeCard = (req, res, next) => {
   )
     .then((cards) => {
       if (!cards) {
-        return next(new BadRequest('Передан несуществующий _id карточки.'));
+        return next(new NotFound('Передан несуществующий _id карточки.'));
       }
       return res.status(200).res.send(cards);
     })
