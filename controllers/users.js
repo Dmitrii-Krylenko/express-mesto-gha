@@ -30,15 +30,6 @@ module.exports.getUserId = (req, res, next) => {
         next(err);
       }
     });
-  // .catch((err) => {
-  //   // console.log(err);
-
-  //   if (err.name === 'CastError' || err.name === 'ValidationError') {
-  //     return next(new BadRequest('\ создании пользователя. по умолчанию.'));
-  //     // return res.status(400).send({ message: 'Переданы я. по умолчанию.' });
-  //   }
-  //   return next(err);
-  // });
 };
 
 module.exports.createUser = (req, res, next) => {
