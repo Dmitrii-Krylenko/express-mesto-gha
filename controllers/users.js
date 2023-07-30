@@ -17,7 +17,7 @@ module.exports.getUserId = (req, res, next) => {
   User.findById(req.params.userId, {}, { new: true, runValidators: false })
     .then((user) => {
       if (!user) {
-        return next(new BadRequest('Пользователь по указанному _id не найден.'));
+        return next(new NotFound('Пользователь по указанному _id не найден.'));
       }
       return res.send(user);
     })
