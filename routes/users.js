@@ -15,7 +15,11 @@ usersRouter.get('/', getUsers);
 
 usersRouter.get('/me', getCurrentUser);
 
-usersRouter.get('/:userId', getUserId);
+usersRouter.get('/:userId', celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().hex().required(),
+  }),
+}), getUserId);
 
 userPublicRouter.post('/signup', celebrate({
   body: Joi.object().keys({
