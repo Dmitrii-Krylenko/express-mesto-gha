@@ -41,7 +41,7 @@ userPublicRouter.post('/signin', celebrate({
 }), login);
 
 usersRouter.patch('/me', celebrate({
-  params: Joi.object().keys({
+  body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
 
@@ -49,7 +49,7 @@ usersRouter.patch('/me', celebrate({
 }), updateUsers);
 
 usersRouter.patch('/me/avatar', celebrate({
-  params: Joi.object().keys({
+  body: Joi.object().keys({
     avatar: Joi.string().pattern(new RegExp(regEx)),
 
   }),
