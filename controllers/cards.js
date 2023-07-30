@@ -49,7 +49,7 @@ module.exports.likeCard = (req, res, next) => {
       if (!cards) {
         return next(new NotFound('Передан несуществующий _id карточки.'));
       }
-      return res.status(200).res.send(cards);
+      return res.status(200).send(cards);
     })
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
