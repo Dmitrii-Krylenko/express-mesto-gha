@@ -1,6 +1,6 @@
 const Card = require('../models/card');
 const BadRequest = require('../errors/badRequest');
-const NotFound = require('../errors/badRequest');
+const NotFound = require('../errors/notfound');
 
 // rout card
 module.exports.getCards = (req, res, next) => {

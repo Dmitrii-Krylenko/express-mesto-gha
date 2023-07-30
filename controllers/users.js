@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const BadRequest = require('../errors/badRequest');
 const Conflict = require('../errors/conflict');
-const NotFound = require('../errors/badRequest');
+const NotFound = require('../errors/notfound');
 const Unauthorized = require('../errors/unauthorized');
 // Rout user
 module.exports.getUsers = (req, res, next) => {
