@@ -15,14 +15,10 @@ usersRouter.get('/', getUsers);
 
 usersRouter.get('/me', getCurrentUser);
 
-usersRouter.get('/:userId', celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().length(24).hex().required(),
-  }),
-}), getUserId);
+usersRouter.get('/:userId', getUserId);
 
 userPublicRouter.post('/signup', celebrate({
-  params: Joi.object().keys({
+  body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().pattern(new RegExp(regEx)),
@@ -33,7 +29,7 @@ userPublicRouter.post('/signup', celebrate({
 }), createUser);
 
 userPublicRouter.post('/signin', celebrate({
-  params: Joi.object().keys({
+  body: Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
 
