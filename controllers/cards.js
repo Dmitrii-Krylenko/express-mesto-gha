@@ -27,13 +27,13 @@ module.exports.deleteCards = (req, res, next) => {
   Card.deleteOne({ _id: req.params.cardId, owner: req.user._id })
     .then((deleteStatus) => {
       if (deleteStatus.deletedCount === 0) {
-        return next(new NotFound('не владелец карточки'));
+        return next(new Forbidden('не владелец карточки'));
       }
       return res.status(200).send({ message: 'УДОЛИЛОСЬ.' });
     })
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
-        return next(new Forbidden('1Карточка с указанным _id не найдена.'));
+        return next(new NotFound('1Карточка с указанным _id не найдена.'));
       }
       return next(err);
     });
