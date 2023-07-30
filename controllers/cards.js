@@ -27,7 +27,10 @@ module.exports.deleteCards = (req, res, next) => {
   Card.deleteOne({ _id: req.params.cardId, owner: req.user._id })
     .then((deleteStatus) => {
       if (deleteStatus.deletedCount === 0) {
-        return next(new Forbidden('не владелец карточки'));
+        return next(new NotFound('не владелец карточки'));
+      }
+      if (String(Card.owner) !== String(req.user._id)) {
+        return new Forbidden('Недостаточно прав');
       }
       return res.status(200).send({ message: 'УДОЛИЛОСЬ.' });
     })
