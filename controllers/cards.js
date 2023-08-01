@@ -24,22 +24,18 @@ module.exports.postCards = (req, res, next) => {
 };
 
 module.exports.deleteCards = (req, res, next) => {
-  Card.deleteOne({ _id: req.params.cardId, owner: req.user._id })
-    .then((deleteStatus) => {
-      if (deleteStatus.deletedCount === 0) {
-        return next(new NotFound('не владелец карточки'));
+  Card.findById(req.params.cardId)
+    .then((card) => {
+      if (!card) {
+        throw new NotFound('Карточка с указанным _id не найдена.');
       }
-      if (String(Card.owner) !== String(req.user._id)) {
-        return new Forbidden('Недостаточно прав');
+      if (String(card.owner) !== String(req.user._id)) {
+        throw new Forbidden('Нет прав для удаления карточки');
       }
-      return res.status(200).send({ message: 'УДОЛИЛОСЬ.' });
+      return Card.findByIdAndRemove(req.params.cardId);
     })
-    .catch((err) => {
-      if (err.name === 'CastError' || err.name === 'ValidationError') {
-        return next(new NotFound('1Карточка с указанным _id не найдена.'));
-      }
-      return next(err);
-    });
+    .then((card) => res.status(200).send(card))
+    .catch((err) => next(err));
 };
 
 module.exports.likeCard = (req, res, next) => {
