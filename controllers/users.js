@@ -131,7 +131,7 @@ module.exports.getCurrentUser = (req, res, next) => {
   // const token = req.cookies.loginedUserToken;
   // const decoded = jwt.verify(token, 'some-secret-key');
   // const userId = decoded._id;
-  User.findById(req.user._id)
+  User.findById(req.user._id, {}, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
         return next(
