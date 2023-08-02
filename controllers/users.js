@@ -131,14 +131,14 @@ module.exports.getCurrentUser = (req, res, next) => {
   // const token = req.cookies.loginedUserToken;
   // const decoded = jwt.verify(token, 'some-secret-key');
   // const userId = decoded._id;
-  User.findById(req.userId, {}, { new: true, runValidators: false })
+  User.findById(req.userId)
     .then((user) => {
       if (!user) {
         return next(
           new NotFound('Пользователь с указанным _id не найден.'),
         );
       }
-      return res.send({
+      return res.status(200).send({
         _id: user._id,
         email: user.email,
         name: user.name,
