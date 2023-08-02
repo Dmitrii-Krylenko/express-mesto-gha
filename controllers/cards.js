@@ -10,7 +10,6 @@ module.exports.getCards = (req, res, next) => {
 };
 
 module.exports.postCards = (req, res, next) => {
-  console.log(req);
   const owner = req.user._id;
   const { name, link } = req.body;
   Card.create({ name, link, owner })
@@ -35,7 +34,12 @@ module.exports.deleteCards = (req, res, next) => {
       return Card.findByIdAndRemove(req.params.cardId);
     })
     .then((card) => res.status(200).send(card))
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return next(new BadRequest('Переданы некорректные данные при удалении карточки.'));
+      }
+      return next(err);
+    });
 };
 
 module.exports.likeCard = (req, res, next) => {

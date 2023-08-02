@@ -1,7 +1,5 @@
-// const router = require('express').Router();
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
-// const auth = require('../middlewares/auth');
 
 const usersRouter = express.Router();
 const userPublicRouter = express.Router();

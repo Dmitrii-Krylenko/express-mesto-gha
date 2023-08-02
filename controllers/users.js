@@ -21,16 +21,12 @@ module.exports.getUserId = (req, res, next) => {
       }
       return res.send(user);
     })
-    .catch(next);
-  // .catch((err) => {
-  //   if (err.name === 'CastError') {
-  //     throw new BadRequest(
-  //       'Переданы некорректные данные пользователя.',
-  //     );
-  //   } else {
-  //     next(err);
-  //   }
-  // });
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return next(new BadRequest('Переданы некорректные данные для получения карточки.'));
+      }
+      return next(err);
+    });
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -61,14 +57,16 @@ module.exports.updateUsers = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .orFail()
     .then((user) => {
-      if (!user) {
-        return next(new BadRequest('Пользователь по указанному _id не найден.'));
-      }
-      return res.send(user);
+      res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return next(new BadRequest('Переданы некорректные данные при обновлении профиля.'));
+      }
+      if (err.name === 'DocumentNotFoundError') {
+        return next(
+          new NotFound('Пользователь с указанным _id не найден.'),
+        );
       }
       return next(err);
     });
@@ -80,14 +78,16 @@ module.exports.updateAvatar = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .orFail()
     .then((user) => {
-      if (!user) {
-        return next(new NotFound('Пользователь по указанному _id не найден.'));
-      }
-      return res.send(user);
+      res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return next(new BadRequest('Переданы некорректные данные при обновлении профиля.'));
+      }
+      if (err.name === 'DocumentNotFoundError') {
+        return next(
+          new NotFound('Пользователь с указанным _id не найден.'),
+        );
       }
       return next(err);
     });
@@ -128,12 +128,10 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
-  const token = req.cookies.loginedUserToken;
-  const decoded = jwt.verify(token, 'some-secret-key');
-  const userId = decoded._id;
-  console.log(userId);
-  console.log(token);
-  User.findById(userId, {}, { new: true, runValidators: false })
+  // const token = req.cookies.loginedUserToken;
+  // const decoded = jwt.verify(token, 'some-secret-key');
+  // const userId = decoded._id;
+  User.findById(req.userId, {}, { new: true, runValidators: false })
     .then((user) => res.send(user))
     .catch((err) => next(err));
 };

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const isURL = require('validator/lib/isURL');
+const isEmail = require('validator/lib/isEmail');
 
 const userSchema = new mongoose.Schema({
   name: { // у пользователя есть имя — опишем требования к имени в схеме:
@@ -26,6 +27,10 @@ const userSchema = new mongoose.Schema({
     type: String, // имя — это строка
     required: true, // оно должно быть у каждого пользователя, так что имя — обязательное поле
     unique: true,
+    validate: {
+      validator: (mail) => isEmail(mail),
+      message: 'Не верная почта',
+    },
   },
   password: { // у пользователя есть имя — опишем требования к имени в схеме:
     type: String, // имя — это строка
